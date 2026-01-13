@@ -28,10 +28,10 @@ export default async function Page() {
     }
 
     // Check if already has mailbox
-    const { data: mailbox } = await supabase.from('mailboxes').select('aka').eq('user_id', user.id).single()
+    const { data: mailbox } = await supabase.from('mailboxes').select('id').eq('user_id', user.id).single()
 
     if (mailbox) {
-        redirect(`/${encodeURIComponent(mailbox.aka)}`)
+        redirect(`/${mailbox.id}`)
     }
 
     return (
