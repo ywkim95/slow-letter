@@ -16,7 +16,7 @@ export default async function Page({ params }: PageProps) {
     // Just check if mailbox exists to avoid 404 for valid mailboxes
     const { data: mailbox, error } = await supabase
         .from('mailboxes')
-        .select('id')
+        .select('id, aka')
         .eq('id', decodedKey)
         .single()
 
@@ -31,7 +31,7 @@ export default async function Page({ params }: PageProps) {
                 <div className="absolute bottom-[20%] left-[10%] w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]" />
             </div>
 
-            <LetterForm mailboxKey={decodedKey} />
+            <LetterForm mailboxKey={decodedKey} mailboxName={mailbox.aka} />
 
             <footer className="mt-12 text-center text-slate-600 text-sm">
                 <Link href="/" className="hover:text-slate-400 transition-colors">

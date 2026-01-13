@@ -11,7 +11,7 @@ const initialState = {
     success: false,
 }
 
-export default function LetterForm({ mailboxKey }: { mailboxKey: string }) {
+export default function LetterForm({ mailboxKey, mailboxName }: { mailboxKey: string, mailboxName: string }) {
     const sendLetterWithKey = sendLetter.bind(null, mailboxKey)
     // Casting to any to avoid strict type mismatch with bind in Next 15
     const [state, formAction, isPending] = useActionState(sendLetterWithKey as any, initialState)
@@ -48,7 +48,7 @@ export default function LetterForm({ mailboxKey }: { mailboxKey: string }) {
         <div className="w-full max-w-lg">
             <div className="text-center mb-10 space-y-2">
                 <h1 className="text-4xl font-bold text-white drop-shadow-md tracking-tight">
-                    {mailboxKey}의 우체통
+                    {mailboxName}의 우체통
                 </h1>
                 <p className="text-slate-400">
                     이곳에 당신의 진심을 남겨주세요.
