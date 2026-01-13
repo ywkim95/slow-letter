@@ -58,20 +58,7 @@ export default function LetterForm({ mailboxKey }: { mailboxKey: string }) {
             <div className="glass-card">
                 <form action={formAction} className="space-y-6">
                     <div className="space-y-4">
-                        <div className="space-y-2">
-                            <label htmlFor="receiverEmail" className="block text-sm font-medium text-slate-300 ml-1">
-                                받는 사람 이메일 <span className="text-red-400">*</span>
-                            </label>
-                            <input
-                                type="email"
-                                name="receiverEmail"
-                                id="receiverEmail"
-                                placeholder="편지를 받을 분의 이메일"
-                                className="input-base"
-                                required
-                            />
-                            <p className="text-xs text-slate-500 ml-1">이 주소로 편지가 도착했다는 알림이 전송됩니다.</p>
-                        </div>
+
 
                         <div className="space-y-2">
                             <label htmlFor="senderName" className="block text-sm font-medium text-slate-300 ml-1">
@@ -149,7 +136,7 @@ export default function LetterForm({ mailboxKey }: { mailboxKey: string }) {
                         )}
                     </button>
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }

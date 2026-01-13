@@ -52,12 +52,12 @@ export async function createMailbox(prevState: any, formData: FormData) {
     }, { onConflict: 'id' }).select()
 
     // 2. Insert Mailbox
-    const { error } = await supabase.from('mailboxes').insert({
+    const { data: newMailbox, error } = await supabase.from('mailboxes').insert({
         user_id: user.id,
         aka,
         notification_email: notificationEmail || null,
         email_notification_enabled: !!notificationEmail && notificationEmail.length > 0
-    })
+    }).select().single()
 
     if (error) {
         console.log(error)
@@ -68,8 +68,8 @@ export async function createMailbox(prevState: any, formData: FormData) {
         return { error: '우체통 생성 중 오류가 발생했습니다.' }
     }
 
-    // Use encodeURIComponent for the key part to handle Korean characters safely in headers
-    redirect(`/${encodeURIComponent(aka)}`)
+    // Redirect to UUID based URL (Stable)
+    redirect(`/${newMailbox.id}`)
 }
 
 export async function signOut() {
@@ -110,7 +110,7 @@ export async function updateMailboxAka(prevState: any, formData: FormData) {
     }
 
     revalidatePath('/dashboard')
-    revalidatePath(`/${newAka}`)
+    revalidatePath(`/${mailboxId}`)
 
     return { success: true, message: '우체통 이름이 변경되었습니다.', newAka }
 }
@@ -175,18 +175,17 @@ export async function sendLetter(mailboxKey: string, prevState: any, formData: F
 
     const senderName = formData.get('senderName') as string
     const content = formData.get('content') as string
-    const receiverEmail = formData.get('receiverEmail') as string
     const openDate = formData.get('openDate') as string
 
-    if (!senderName || !content || !receiverEmail) {
-        return { error: '이름, 받는 사람 이메일, 내용을 모두 입력해주세요.' }
+    if (!senderName || !content) {
+        return { error: '이름과 내용을 모두 입력해주세요.' }
     }
 
     // Find Mailbox
     const { data: mailbox, error: mbError } = await supabase
         .from('mailboxes')
-        .select('id')
-        .eq('aka', mailboxKey)
+        .select('id, notification_email')
+        .eq('id', mailboxKey)
         .single()
 
     if (mbError || !mailbox) {
@@ -194,6 +193,7 @@ export async function sendLetter(mailboxKey: string, prevState: any, formData: F
     }
 
     const isPublic = formData.get('isPublic') === 'on'
+    const receiverEmail = mailbox.notification_email
 
     // Insert Letter
     const { error } = await supabase.from('letters').insert({

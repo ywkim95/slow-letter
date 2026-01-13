@@ -43,11 +43,11 @@ export default async function Dashboard() {
                         <EditMailboxForm currentAka={mailbox.aka} mailboxId={mailbox.id} />
                     </div>
                     <Link
-                        href={`/${mailbox.aka}`}
+                        href={`/${mailbox.id}`}
                         className="text-slate-400 hover:text-white transition-colors flex items-center gap-2 text-sm"
                         target="_blank"
                     >
-                        내 우체통 주소: /{mailbox.aka} <ArrowUpRight className="w-3 h-3" />
+                        내 우체통 주소: (클릭하여 이동) <ArrowUpRight className="w-3 h-3" />
                     </Link>
                 </div>
                 <div className="flex gap-8">

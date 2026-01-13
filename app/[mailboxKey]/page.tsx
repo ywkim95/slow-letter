@@ -17,7 +17,7 @@ export default async function Page({ params }: PageProps) {
     const { data: mailbox, error } = await supabase
         .from('mailboxes')
         .select('id')
-        .eq('aka', decodedKey)
+        .eq('id', decodedKey)
         .single()
 
     if (error || !mailbox) {
